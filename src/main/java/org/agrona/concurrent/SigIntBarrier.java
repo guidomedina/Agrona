@@ -36,11 +36,17 @@ public class SigIntBarrier
 
         Signal.handle(
             new Signal("INT"),
-            (signal) ->
-            {
-                running = false;
-                LockSupport.unpark(thread);
-            });
+            (signal) -> signal()
+        );
+    }
+
+    /**
+     * Signals this barrier when either SIGINT signal is received or manually called.
+     */
+    public void signal()
+    {
+        running = false;
+        LockSupport.unpark(thread);
     }
 
     /**
